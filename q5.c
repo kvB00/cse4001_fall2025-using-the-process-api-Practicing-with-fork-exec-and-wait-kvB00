@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>   // for wait()
+#include <sys/wait.h>   
 
 int main(int argc, char *argv[]) {
-    printf("hello world (pid:%d)\n", (int) getpid());
 
     int rc = fork();
     if (rc < 0) {
@@ -13,10 +12,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     } else if (rc == 0) {
         // child (new process)
-        printf("hello, I am child (pid:%d)\n", (int) getpid());
-        // simulate some work
-       // sleep(1);  // optional: gives a visible delay
-        exit(0);   // child exits cleanly
+        printf("Child at work (pid:%d)\n", (int) getpid());
+        exit(0);   
     } else {
         // parent waits for child to finish
         int wc = wait(NULL);  // block until any child finishes
@@ -24,7 +21,7 @@ int main(int argc, char *argv[]) {
             perror("wait");
             exit(1);
         }
-        printf("hello, I am parent of %d (pid:%d)\n", rc, (int) getpid());
+        printf("Parent at work (pid:%d)\n", (int) getpid());
     }
 
     return 0;

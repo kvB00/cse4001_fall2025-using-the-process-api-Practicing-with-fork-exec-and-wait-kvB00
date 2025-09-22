@@ -6,6 +6,8 @@ int
 main(int argc, char *argv[])
 {
 	int x = 100;
+	printf("Value before fork: x = %d (pid:%d)\n", x, (int) getpid());
+
     int rc = fork();
     if (rc < 0) {
         // fork failed; exit
@@ -13,11 +15,13 @@ main(int argc, char *argv[])
         exit(1);
     } else if (rc == 0) {
         // child (new process)
-        printf("Value of child (pid:%d)\n", (int) getpid());
+        printf("Child initially sees x value of %d (pid:%d)\n", x, (int) getpid());
+	x = 200;
+	printf("Child now sees x value of %d (pid:%d)\n", x, (int) getpid());
     } else {
-        // parent goes down this path (original process)
-        printf(" The parent of %d (pid:%d)\n",
-	       rc, (int) getpid());
+        printf("Parent initially sees x value of %d (pid:%d)\n", x, (int) getpid());
+	x = 300;
+        printf("Parent now sees x value of %d (pid:%d)\n", x, (int) getpid());
     }
     return 0;
 }
